@@ -1,3 +1,4 @@
+import { async } from 'regenerator-runtime';
 import { API_URL } from './config.js';
 import { getJSON } from './helpers.js';
 
@@ -5,7 +6,7 @@ export const state = {
   recipe: {},
   search: {
     query: '',
-    results: {},
+    results: [],
   },
 };
 
@@ -33,9 +34,9 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
 
-    const { data } = await getJSON(`${API_URL}?search=${query}`);
+    const data = await getJSON(`${API_URL}?search=${query}`);
 
-    state.search.results = data.recipes.map(rec => {
+    state.search.results = data.data.recipes.map(rec => {
       return {
         id: rec.id,
         title: rec.title,
