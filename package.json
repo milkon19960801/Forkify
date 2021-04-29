@@ -1,0 +1,23 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe application",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milkon19960801/Forkify.git"
+  },
+  "author": "Milkon Milkon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milkon19960801/Forkify/issues"
+  },
+  "homepage": "https://github.com/milkon19960801/Forkify#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.2"
+  }
+}
