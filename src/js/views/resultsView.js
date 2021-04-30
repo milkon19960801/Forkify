@@ -23,16 +23,19 @@ class ResultsView extends View {
                   ${result.title}
                 </h4>
                 <p class="preview__publisher">${result.publisher}</p>
-                <div class="preview__user-generated">
-                    <svg>
-                        <use href="${icons}#icon-user"></use>
-                    </svg>
-                </div>
             </div>
         </a>
     </li>
   `;
   }
+}
+
+{
+  /* <div class="preview__user-generated">
+<svg>
+    <use href="${icons}#icon-user"></use>
+</svg>
+</div> */
 }
 
 export default new ResultsView();
