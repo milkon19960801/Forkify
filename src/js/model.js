@@ -45,7 +45,7 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
 
-    const data = await AJAX(`${API_URL}?search=${query}&?key=${KEY}`);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
 
     state.search.results = data.data.recipes.map(rec => {
       return {
@@ -53,7 +53,7 @@ export const loadSearchResults = async function (query) {
         title: rec.title,
         publisher: rec.publisher,
         image: rec.image_url,
-        ...(recipe.key && { key: recipe.key }),
+        ...(rec.key && { key: rec.key }),
       };
     });
     state.search.page = 1;
@@ -65,16 +65,17 @@ export const loadSearchResults = async function (query) {
 export const getSearchResultsPage = function (page = state.search.page) {
   state.search.page = page;
 
-  const start = (page - 1) * state.search.resultsPerPage; //0;
-  const end = page * state.search.resultsPerPage; //9;
+  const start = (page - 1) * state.search.resultsPerPage; // 0
+  const end = page * state.search.resultsPerPage; // 9
 
   return state.search.results.slice(start, end);
 };
 
 export const updateServings = function (newServings) {
   state.recipe.ingredients.forEach(ing => {
-    ing.quantity = ing.quantity * (newServings / state.recipe.servings);
+    ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
   });
+
   state.recipe.servings = newServings;
 };
 
@@ -95,6 +96,7 @@ export const deleteBookmark = function (id) {
   state.bookmarks.splice(index, 1);
 
   if (id === state.recipe.id) state.recipe.bookmarked = false;
+
   persistBookmarks();
 };
 
@@ -114,10 +116,9 @@ export const uploadRecipe = async function (newRecipe) {
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ing => {
         const ingArr = ing[1].split(',').map(el => el.trim());
-
         if (ingArr.length !== 3)
           throw new Error(
-            'Wrong ingredient format, Please use the correct format :)'
+            'Wrong ingredient fromat! Please use the correct format :)'
           );
 
         const [quantity, unit, description] = ingArr;
