@@ -17,6 +17,9 @@ class PaginationView extends View {
 
   _generateMarkup() {
     const currentPage = this._data.page;
+    const numPages = Math.ceil(
+      this._data.results.length / this._data.resultsPerPage
+    );
 
     const btnNext = `
     <button data-goto="${
@@ -38,11 +41,6 @@ class PaginationView extends View {
         </svg>
     </button>
     `;
-
-    const numPages = Math.ceil(
-      this._data.results.length / this._data.resultsPerPage
-    );
-    console.log(numPages);
 
     if (currentPage === 1 && numPages > 1) return btnNext;
 

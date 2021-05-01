@@ -10,7 +10,6 @@ import addRecipeView from './views/addRecipeView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { async } from 'regenerator-runtime';
-// import { from } from 'core-js/core/array';
 
 const controlRecipe = async function () {
   try {
@@ -28,13 +27,13 @@ const controlRecipe = async function () {
     recipeView.render(model.state.recipe);
   } catch (err) {
     recipeView.renderError();
-    console.log(err);
   }
 };
 
 const controlSearchResults = async function () {
   try {
     resultsView.renderSpinner();
+
     const query = searchView.getQuery();
     if (!query) return;
 
@@ -81,19 +80,20 @@ const controlAddRecipe = async function (newRecipe) {
     await model.uploadRecipe(newRecipe);
 
     recipeView.render(model.state.recipe);
-  } catch (err) {
-    console.log(err);
-    addRecipeView.renderError(err.message);
+
+    addRecipeView.renderMessage();
+
+    bookmarksView.render(model.state.bookmarks);
+
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
     setTimeout(function () {
       addRecipeView._toggleWindow();
     }, MODAL_CLOSE_SEC * 1000);
+  } catch (err) {
+    console.log(err);
+    addRecipeView.renderError(err.message);
   }
-  addRecipeView.renderMessage();
-
-  bookmarksView.render(model.state.bookmarks);
-
-  window.history.pushState(null, '', `#${model.state.recipe.id}`);
 };
 
 const init = function () {
@@ -106,7 +106,3 @@ const init = function () {
   addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();
-
-const clearBookmarks = function () {
-  localStorage.clear('bookmarks');
-};
